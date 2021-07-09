@@ -1,0 +1,310 @@
+{
+  "settings" : {
+    "number_of_shards" : 1
+  },
+  "mappings": {
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "@version": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "destination": {
+        "properties": {
+          "bytes": {
+            "type": "long"
+          },
+          "ip_bytes": {
+            "type": "long"
+          },
+          "ip": {
+            "type": "ip",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "port": {
+            "type": "long",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "ecs": {
+        "properties": {
+          "version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "event": {
+        "properties": {
+          "action": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "category": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "dataset": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "duration": {
+            "type": "float"
+          },
+          "kind": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "start": {
+            "type": "date"
+          }
+        }
+      },
+      "network": {
+        "properties": {
+          "bytes": {
+            "type": "long"
+          },
+          "packets": {
+            "type": "long"
+          },
+          "protocol": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "transport": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "http": {
+        "properties": {
+          "request": {
+            "properties": {
+              "body": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  }
+                }
+              },
+              "method": {
+                "type": "text"
+              },
+              "referrer": {
+                "type": "text"
+              },
+              "mime_type": {
+                "type": "text"
+              }
+            }
+          },
+          "response": {
+            "properties": {
+              "body": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  }
+                }
+              },
+              "status_code": {
+                "type": "long"
+              },
+              "mime_type": {
+                "type": "text"
+              }
+            }
+          },
+          "version": {
+            "type": "text"
+          },
+          "trans_depth": {
+            "type": "long"
+          }
+        }
+      },
+      "dns": {
+        "properties": {
+          "question": {
+            "properties": {
+              "class": {
+                "type": "long"
+              },
+              "name": {
+                "type": "text"
+              },
+              "type": {
+                "type": "long"
+              }
+            }
+          },
+          "response_code": {
+            "type": "long"
+          },
+          "header_flags": {
+            "type": "text"
+          },
+          "rejected": {
+            "type": "boolean"
+          }
+        }
+      },
+      "tls": {
+        "properties": {
+          "server": {
+            "properties": {
+              "subject": {
+                "type": "text"
+              },
+              "issuer": {
+                "type": "text"
+              }
+            }
+          },
+          "cipher": {
+            "type": "text"
+          },
+          "established": {
+            "type": "boolean"
+          },
+          "resumed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "user_agent": {
+        "properties": {
+          "original": {
+            "type": "text"
+          }
+        }
+      },
+      "zeek": {
+        "properties": {
+          "conn_state": {
+            "type": "text"
+          },
+          "missed_bytes": {
+            "type": "long"
+          }
+        }
+      },
+      "weird": {
+        "properties": {
+          "name": {
+            "type": "text"
+          },
+          "addl": {
+            "type": "long"
+          },
+          "notice": {
+            "type": "boolean"
+          }
+        }
+      },
+      "source": {
+        "properties": {
+          "bytes": {
+            "type": "long"
+          },
+          "ip_bytes": {
+            "type": "long"
+          },
+          "ip": {
+            "type": "ip",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "port": {
+            "type": "long",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "tags": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "label": {
+        "type": "long",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "type": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
