@@ -69,14 +69,14 @@ if __name__ == "__main__":
 
     if LOGGING == "DEBUG":
         LOGGER.setLevel(logging.DEBUG)
-    elif LOGGING == "INFO":
-        LOGGER.setLevel(logging.INFO)
     elif LOGGING == "WARNING":
         LOGGER.setLevel(logging.WARNING)
     elif LOGGING == "ERROR":
         LOGGER.setLevel(logging.ERROR)
     elif LOGGING == "CRITICAL":
         LOGGER.setLevel(logging.CRITICAL)
+    else:
+        LOGGER.setLevel(logging.INFO)
 
     # Reading in the csv files
     folder = "./data/"
@@ -99,14 +99,13 @@ if __name__ == "__main__":
     LOGGER.debug(f"\n{df.to_string(max_rows=10, max_cols=100)}")
     LOGGER.debug(f"\n{df.dtypes}")
 
-    x = 0
-    LOGGER.info(f"Ready to send {df.shape[0]} docs to cluster!")
-    LOGGER.info("Starting!")
+    count = 0
+    LOGGER.info(f"Ready to send {df.shape[0]} docs to cluster, Starting!")
     # Begin creating one request body per DataFrame row and send it to elastic search
     for index, row in df.iterrows():
-        x = x + 1
-        if x % 5000 == 0:
-            LOGGER.info(f"{x / df.shape[0] * 100:.2f}% ...")
+        count = count + 1
+        if count % 5000 == 0:
+            LOGGER.info(f"{count / df.shape[0] * 100:.2f}% ...")
 
         body = {
             "@timestamp": None,
@@ -336,95 +335,6 @@ if __name__ == "__main__":
                 if col == "type":
                     body["type"] = row["type"]
                     body["tags"] = ["TON_IoT", row["type"]]
-
-        # old version
-        # body = {
-        #     "@timestamp": datetime.utcfromtimestamp(row["ts"]).strftime('%Y-%m-%dT%H:%M:%S'),
-        #     "@version": "1",
-        #     "ecs": {
-        #         "version": "1.10.0"
-        #     },
-        #     "event": {
-        #         "kind": "event",
-        #         "dataset": "flow",
-        #         "action": "network_flow",
-        #         "category": "network_traffic",
-        #         "start": datetime.utcfromtimestamp(row["ts"]).strftime("%Y-%m-%dT%H:%M:%S"),
-        #         "duration": row["duration"]
-        #     },
-        #     "source": {
-        #         "ip": row["src_ip"],
-        #         "port": row["src_port"],
-        #         "bytes": row["src_bytes"],
-        #         "ip_bytes": row["src_ip_bytes"]
-        #     },
-        #     "destination": {
-        #         "ip": row["dst_ip"],
-        #         "port": row["dst_sport"],
-        #         "bytes": row["dst_bytes"],
-        #         "ip_bytes": row["dst_ip_bytes"]
-        #     },
-        #     "network": {
-        #         "protocol": row["service"],
-        #         "transport": row["proto"],
-        #         "type": "ipv6" if ":" in row["src_ip"] else "ipv4",
-        #         "bytes": row["src_bytes"] + row["dst_bytes"],
-        #         "packets": row["src_pkts"] + row["dst_pkts"]
-        #     },
-        #     "http": {
-        #         "request": {
-        #             "body": {
-        #                 "bytes": row["http_request_body_len"]
-        #             },
-        #             "method": row["http_method"],
-        #             "referrer": row["http_uri"],
-        #             "mime_type": row["http_orig_mime_types"]
-        #         },
-        #         "response": {
-        #             "body": {
-        #                 "bytes": row["http_response_body_len"]
-        #             },
-        #             "status_code": row["http_status_code"],
-        #             "mime_type": row["http_resp_mime_types"]
-        #         },
-        #         "version": row["http_version"],
-        #         "trans_depth": row["http_trans_depth"]
-        #     },
-        #     "user_agent": {
-        #         "original": row["http_user_agent"]
-        #     },
-        #     "zeek": {
-        #         "conn_state": row["conn_state"],
-        #         "missed_bytes": row["missed_bytes"]
-        #     },
-        #     "dns": {
-        #         "question": {
-        #             "class": row["dns_qclass"],
-        #             "name": row["dns_query"],
-        #             "type": row["dns_qtype"]
-        #         },
-        #         "response_code": row["dns_rcode"],
-        #         "header_flags": header_flags,
-        #         "rejected": True if row["dns_rejected"] != 0 and row["dns_rejected"] == "T" else False
-        #     },
-        #     "tls": {
-        #         "cipher": row["ssl_cipher"],
-        #         "established": True if row["ssl_established"] != 0 and row["ssl_established"] == "T" else False,
-        #         "resumed": True if row["ssl_resumed"] != 0 and row["ssl_resumed"] == "T" else False,
-        #         "server": {
-        #           "subject": row["ssl_subject"],
-        #           "issuer": row["ssl_issuer"]
-        #         }
-        #     },
-        #     "weird": {
-        #         "name": row["weird_name"],
-        #         "addl": row["weird_addl"],
-        #         "notice": row["weird_notice"]
-        #     },
-        #     "type": row["type"],
-        #     "label": row["label"],
-        #     "tags": ["TON_IoT", row["type"]]
-        # }
 
         body = remove_empties_from_dict(body)
         LOGGER.debug(f"Sending {body}")
